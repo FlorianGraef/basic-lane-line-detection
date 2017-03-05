@@ -15,11 +15,6 @@ The goals / steps of this project are the following:
 
 [image1]: ./test_images/generated/10/solidWhiteCurve.jpg_final_10.png "Phase 3"
 [image2]: ./test_images/generated/05/solidWhiteCurve.jpg_final_05.png "Phase 1"
-[image3]: ./generated_images/canny.png "Grayscale"
-[image4]: ./generated_images/masked.png "Grayscale"
-[image5]: ./generated_images/hough.png "Grayscale"
-[image6]: ./generated_images/final.png "Grayscale"
-<img src="./generated_images/final.png" alt="Drawing" style="width: 400px;"/>
 
 ---
 
@@ -27,7 +22,6 @@ The goals / steps of this project are the following:
 
 ###1. Describe your pipeline. As part of the description, explain how you modified the draw_lines() function.
 
-![alt text][image2]
 
 I started developing my pipeline to identify lane lines by first chaining up the offered helper functions in the order that we learned in the classes. My intention was to first establish a basic pipeline that works to refine it later. So chained up the following steps:
 
@@ -37,10 +31,16 @@ I started developing my pipeline to identify lane lines by first chaining up the
 4. Masking the image to only consider a certain area of interest where we expect lane lines
 5. Hough transform (rho = 1, theta = np.pi/180, threshold = 8, min line len = 50, max line gap = 30) 
 
-I then worked on optimizing the hough transform parameters with the idea to already get long continuos lines bridging the gaps of the lane lines. That worked well on the single test images but when applying this to the video resulted in longer periods of time where no lane lines at all were detected because the now strict criteria of the hough transform were not easy to satisfy at all times.
+I then worked on optimizing the hough transform parameters with the idea to already get long continuos lines bridging the gaps of the lane lines. That worked well, as depicted below, on the single test images but when applying this to the video resulted in longer periods of time where no lane lines at all were detected because the now strict criteria of the hough transform were not easy to satisfy at all times.
+
+![alt text][image2]
+
 Consequently the parameters were changed to 30, 5,  3 so that generally more lines would be present for further processing.
 Since many small lane lines are suboptimal for determination of the position of the car with regard to the lane lines the next steps included to reduce the number of lanes found to two, one left and one right.
-The right left distinction was done using the slopes of the found hough lines. Upon right left categorization based on slope the many left and many right lines were merged into one each by calculating and averaging their intercepts with the horizontal lines at Y=0.6*imshape[0] and Y=imshape[0] of the image. The following image shows the resulting averaged and exrapolated lane lines.
+The right left distinction was done using the slopes of the found hough lines. Upon right left categorization based on slope the many left and many right lines were merged into one each by calculating and averaging their intercepts with the horizontal lines at Y=0.6 * imshape[0] and Y=imshape[0] of the image. The following image shows the resulting averaged and exrapolated lane lines.
+
+![alt text][image1]
+
 The combination of more, shorter hough lines being merged into a single left and right lane worked well for the videos one and two but in the optional challenge video my pipeline was struggling to detect lanes. Especially the shade on the road caused troubles but as well the lane detection seemed unstable and the lanes were jumping around.
 
 From the Q&A video and the hint of the possibly helpful OpenCV functions, inculding cv2.inRange, the idea to just look at white and yellow colour as input for the pipeline was taken.
