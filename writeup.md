@@ -35,7 +35,7 @@ I then worked on optimizing the hough transform parameters with the idea to alre
 
 ![alt text][image2]
 
-Consequently the parameters were changed to 30, 5,  3 so that generally more lines would be present for further processing.
+Consequently the hough transform parameters were changed to 30, 5,  3 (threshold, min line length and max line gap) so that generally more lines would be present for further processing.
 Since many small lane lines are suboptimal for determination of the position of the car with regard to the lane lines the next steps included to reduce the number of lanes found to two, one left and one right.
 The right left distinction was done using the slopes of the found hough lines. Upon right left categorization based on slope the many left and many right lines were merged into one each by calculating and averaging their intercepts with the horizontal lines at Y=0.6 * imshape[0] and Y=imshape[0] of the image. The following image shows the resulting averaged and exrapolated lane lines.
 
@@ -71,3 +71,6 @@ I suspect that the colour filtering causes its own issues as some parts of a pal
 The pipeline would be more flexible by operating on the contrast edges alone and would have a fair chance to detect lane lines in more irregular colours. The general purpose of lane markings requires a good contrast. Exploiting just this feature by using canny edge detection should ensure generalizability of the model which may be required in special conditions.
 
 Instead of simply averaging the intersections of extrapolated hough lines linear regression combined with outlier detection could be applied to the two hough line groups to filter out noise.
+
+Overall there are many possible improvements to be explored but a good balance of necessary update rate of the pipeline and complexity of the pipeline needs to be found under constraint computational power available in the car. 
+The analysis underlying this report is carried out offline on videos that alread exist but in an actual car would have to be done on the fly in realtime. If the pipeline takes too long to run process individual frames because the computations are too time consuming, the car might be elsewhere until the processed image arrives and possibly frames have to be dropped for processing in order to keep up. It seems imperative to have a high update rate of processed images, maybe dependent on the speed of travel and dynamics of the traffic situation. A highway possibly does not require a update rate as high as a inner city situation with cars and other traffic participants travelling a lot less predictable and in differing directions.
