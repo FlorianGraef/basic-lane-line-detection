@@ -43,7 +43,7 @@ The right left distinction was done using the slopes of the found hough lines. U
 
 The combination of more, shorter hough lines being merged into a single left and right lane worked well for the videos one and two but in the optional challenge video my pipeline was struggling to detect lanes. Especially the shade on the road caused troubles but as well the lane detection seemed unstable and the lanes were jumping around.
 
-[Lane detection challange video](https://youtu.be/4xiseh_v5_g)
+[Lane detection challenge video](https://youtu.be/4xiseh_v5_g)
 
 From the Q&A video and the hint of the possibly helpful OpenCV functions, inculding cv2.inRange, the idea to just look at white and yellow colour as input for the pipeline was taken.
 This has proven to help a lot with continuosly detecting lane lines, especially in the shade, but still the lane lines were a bit unstable and jittery.
